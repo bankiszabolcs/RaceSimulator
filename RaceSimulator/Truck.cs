@@ -14,6 +14,7 @@ namespace RaceSimulator
         public static event BreakDown OnFailureStart;
         private bool brokedDown = false;
         private int failureHourCounter = 0;
+        private int runningCounter = 0;
         public Truck() {
 
             this.Name = GetUniqueName();
@@ -40,23 +41,16 @@ namespace RaceSimulator
             this.Speed = 100;
         }
 
-        private void Repaired()
-        {
-            if (this.brokedDown)
-            {
-                Console.WriteLine("Truck {0} has been repaired", this.Name);
-                this.brokedDown = !this.brokedDown;
-            }
-        }
-
         protected override void Run()
         {
+            runningCounter++;
             if(this.failureHourCounter == 2)
             {
                 Start();
                 this.failureHourCounter = 0;
                 this.Run();
-                 Console.WriteLine("Truck {0} has been repaired", this.Name);
+                string actualEvent = ($"Truck {this.Name} javítása befejeződött. Folytathatja a versenyt.");
+                Logger.eventContainer.Add(Logger.getId(), runningCounter + ":00: " + actualEvent);
             }
             if (this.Speed == 0)
             {
@@ -70,7 +64,8 @@ namespace RaceSimulator
                 failureHourCounter++;
                 if (OnFailureStart != null)
                 {
-                    Console.WriteLine("{0} has broken down on the circuit.", this.Name);
+                    string actualEvent = $"Truck {this.Name} lerobbant a pályán.";
+                    Logger.eventContainer.Add(Logger.getId(), runningCounter + ":00: " + actualEvent);
                     OnFailureStart();
                 }
             }

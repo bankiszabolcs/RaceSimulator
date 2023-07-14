@@ -67,7 +67,7 @@ namespace RaceSimulator
 
         private void DisplayRacers()
         {
-            Console.WriteLine("Racers:");
+            Console.WriteLine("Versenyzők:");
             for (int i = 0; i < allCars.Count; i++)
             {
                 var actualVehicle = allCars.ElementAt(i).Value;
@@ -91,22 +91,23 @@ namespace RaceSimulator
               
         private void StepOneHour(Object o)
         {
-            if(duration == timeOfTrackFailure + 3 && OnFailureEnd != null) 
+            Console.Clear();
+            if (duration == timeOfTrackFailure + 3 && OnFailureEnd != null) 
             {                
                OnFailureEnd();
-                Console.WriteLine("There is no more damaged car on the circuit!");
+                Console.WriteLine("Nincs több lerobbant autó a pályán!");
             }
             if (duration <= 15)
             {
                 if (dice.Next(1, 10) > 3)
                 {
-                    if(isItRaining) GameEventManager.TriggerRainEnd(isItRaining);
+                    if (isItRaining) GameEventManager.TriggerRainEnd(isItRaining, duration);
                     isItRaining = false;
                     GameEventManager.TriggerOneHourRun(duration);
                 }
                 else
                 {
-                    GameEventManager.TriggerRainStart(isItRaining);
+                    GameEventManager.TriggerRainStart(isItRaining, duration);
                     isItRaining = true;
                     GameEventManager.TriggerOneHourRun(duration);
                 }
@@ -121,7 +122,7 @@ namespace RaceSimulator
 
         private void Stop()
         {
-            Console.WriteLine("Game has ended. \n Result is the following:");
+            Console.WriteLine("Verseny véget ért. \n Az eredmény a következő");
             DisplayResult(allCars.Count, allCars);
             GameEventManager.TriggerGameEnd();
             timer.Dispose();
@@ -140,7 +141,6 @@ namespace RaceSimulator
         public static void DisplayResult(int numberOfCars, Dictionary<String, Vehicle> allCars)
         {
            allCars = allCars.OrderBy(x => -x.Value.Distance).ToDictionary(x => x.Key, x => x.Value);
-
             for (int i = 0; i < numberOfCars; i++)
             {
                 Vehicle actualCar = allCars.ElementAt(i).Value;

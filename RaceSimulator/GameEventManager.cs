@@ -17,7 +17,7 @@ namespace RaceSimulator
         {
             if(OnGameStart != null)
             {
-                Console.WriteLine("The game has started");
+                Console.WriteLine("Verseny elkezdődött.");
                 OnGameStart();
             }
         }
@@ -26,7 +26,7 @@ namespace RaceSimulator
         {
             if(OnGameEnd != null)
             {
-                Console.WriteLine("The game has ended");
+                Console.WriteLine("Verseny véget ért.");
                 OnGameEnd();
             }
         }
@@ -35,32 +35,33 @@ namespace RaceSimulator
         {
             if(OnRun != null){ 
                 OnRun();
-                if(hour % 5 == 0)
+                Console.WriteLine("{0}:00 - Verseny állása:", hour);
+                Game.DisplayResult(10,Game.allCars);
+
+                Console.WriteLine("ESEMÉNYEK");
+                for (int i = 0; i < Logger.eventContainer.Count; i++)
                 {
-                Console.WriteLine("{0}. hour - Result is the following:", hour);
-                    Game.DisplayResult(10,Game.allCars);   
-                }
-                else
-                {
-                Console.WriteLine("{0}. hour", hour);
-                }
+                    Console.WriteLine(Logger.eventContainer.ElementAt(i));
+                } 
             }
         }
 
-        public static void TriggerRainStart(bool isItRaining)
+        public static void TriggerRainStart(bool isItRaining, int hour)
         {
             if(OnRainStart != null)
             {
-               Console.WriteLine(isItRaining? "It is still raining.":"It has started to rain.");
-               OnRainStart();
+                string actualEvent = isItRaining? "Még mindig esik.":"Az eső rákezdett.";
+                Logger.eventContainer.Add(Logger.getId(), hour+":00: "+actualEvent);
+                OnRainStart();
             }
         }
 
-        public static void TriggerRainEnd(bool isItRaining)
+        public static void TriggerRainEnd(bool isItRaining, int hour)
         {
             if (OnRainEnd != null)
             {
-                Console.WriteLine("It ceases raining");
+                string actualEvent = "Eső befejeződött";
+                Logger.eventContainer.Add(Logger.getId(), hour + ":00: " + actualEvent);
                 OnRainEnd();
             }
         }
