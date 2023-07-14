@@ -34,15 +34,16 @@ namespace RaceSimulator
         public static void TriggerOneHourRun(int hour)
         {
             if(OnRun != null){ 
+                OnRun();
                 if(hour % 5 == 0)
                 {
-                Console.WriteLine("{0}. hour result is the following:", hour);
+                Console.WriteLine("{0}. hour - Result is the following:", hour);
+                    Game.DisplayResult(10,Game.allCars);   
                 }
                 else
                 {
                 Console.WriteLine("{0}. hour", hour);
                 }
-                OnRun();
             }
         }
 

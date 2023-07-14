@@ -20,7 +20,6 @@ namespace RaceSimulator
             GameEventManager.OnGameStart += Start;
             GameEventManager.OnGameEnd += Stop;
             GameEventManager.OnRun += Run;
-            //Game.OnFailureEnd += Run;
         }
 
         private string GetUniqueName()
@@ -64,7 +63,7 @@ namespace RaceSimulator
                 failureHourCounter++;
                 return;
             }
-            if (dice.Next(0, 100) <= 2)
+            if (dice.Next(0, 100) <= 5)
             {
                 Stop();
                 this.brokedDown = true;

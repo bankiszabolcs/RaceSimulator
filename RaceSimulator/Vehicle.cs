@@ -28,5 +28,10 @@ namespace RaceSimulator
         {
             this.Speed = 0;
         }
+
+        public string GetNameWithType()
+        {
+            return this.GetType().ToString().Split('.')[1];
+        }
     }
 }
