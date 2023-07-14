@@ -13,8 +13,6 @@ namespace RaceSimulator
         public static event GameEvent OnGameStart, OnGameEnd, OnRun, OnRainStart,
             OnRainEnd;
 
-        //public static Dictionary<String, Vehicle> allCars = new Dictionary<String, Vehicle>();
-
         public static void TriggerGameStart()
         {
             if(OnGameStart != null)
@@ -48,16 +46,16 @@ namespace RaceSimulator
             }
         }
 
-        public static void TriggerRainStart()
+        public static void TriggerRainStart(bool isItRaining)
         {
             if(OnRainStart != null)
             {
-                Console.WriteLine("It has started to rain.");
-                OnRainStart();
+               Console.WriteLine(isItRaining? "It is still raining.":"It has started to rain.");
+               OnRainStart();
             }
         }
 
-        public static void TriggerRainEnd()
+        public static void TriggerRainEnd(bool isItRaining)
         {
             if (OnRainEnd != null)
             {

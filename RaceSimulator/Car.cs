@@ -47,7 +47,7 @@ namespace RaceSimulator
             GameEventManager.OnGameStart += Start;
             GameEventManager.OnGameEnd += Stop;
             Truck.OnFailureStart += Slow;
-            Truck.OnFailureEnd += PickUpSpeed; 
+            //Truck.OnFailureEnd += PickUpSpeed; 
             GameEventManager.OnRun += Run;
 
         }

@@ -11,16 +11,16 @@ namespace RaceSimulator
         int[] names = new int[10];
         Random dice = new Random();
         public delegate void BreakDown();
-        public static event BreakDown OnFailureStart, OnFailureEnd;
+        public static event BreakDown OnFailureStart;
         private bool brokedDown = false;
+        private int failureHourCounter = 0;
         public Truck() {
 
             this.Name = GetUniqueName();
             GameEventManager.OnGameStart += Start;
             GameEventManager.OnGameEnd += Stop;
             GameEventManager.OnRun += Run;
-            Game.OnFailureEnd += Run;
-            Game.OnFailureEnd += Repaired;
+            //Game.OnFailureEnd += Run;
         }
 
         private string GetUniqueName()
@@ -52,11 +52,23 @@ namespace RaceSimulator
 
         protected override void Run()
         {
-            
+            if(this.failureHourCounter == 2)
+            {
+                Start();
+                this.failureHourCounter = 0;
+                this.Run();
+                 Console.WriteLine("Truck {0} has been repaired", this.Name);
+            }
+            if (this.Speed == 0)
+            {
+                failureHourCounter++;
+                return;
+            }
             if (dice.Next(0, 100) <= 2)
             {
                 Stop();
                 this.brokedDown = true;
+                failureHourCounter++;
                 if (OnFailureStart != null)
                 {
                     Console.WriteLine("{0} has broken down on the circuit.", this.Name);

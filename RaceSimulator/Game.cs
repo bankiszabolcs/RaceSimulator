@@ -22,10 +22,11 @@ namespace RaceSimulator
         private int? timeOfTrackFailure = null;
         public delegate void BreakDown();
         public static event BreakDown OnFailureEnd;
+        private bool isItRaining = false;
 
         public Game() {
             Truck.OnFailureStart += SaveTruckFailureTime;
-            Truck.OnFailureEnd += ResetFailureTime;
+            OnFailureEnd += ResetFailureTime;
         }
 
         public void StartGame()
@@ -93,18 +94,21 @@ namespace RaceSimulator
             if(duration == timeOfTrackFailure + 3 && OnFailureEnd != null) 
             {                
                OnFailureEnd();
+                Console.WriteLine("There is no more damaged car on the circuit!");
             }
             if (duration <= 10)
             {
                 if (dice.Next(1, 10) > 3)
                 {
+                    if(isItRaining) GameEventManager.TriggerRainEnd(isItRaining);
+                    isItRaining = false;
                     GameEventManager.TriggerOneHourRun(duration);
                 }
                 else
                 {
-                    GameEventManager.TriggerRainStart();
+                    GameEventManager.TriggerRainStart(isItRaining);
+                    isItRaining = true;
                     GameEventManager.TriggerOneHourRun(duration);
-                    GameEventManager.TriggerRainEnd();
                 }
                 if (duration % 5 == 0)
                 {
