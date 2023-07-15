@@ -24,7 +24,7 @@ namespace RaceSimulator
         public delegate void BreakDown();
         public static event BreakDown OnFailureEnd;
         private static bool isItRaining = false;
-        private static int TIMELEAP = 2;
+        public static int TIMELEAP = 2;
 
         public Game() {
             Truck.OnFailureStart += SaveTruckFailureTime;
@@ -82,8 +82,7 @@ namespace RaceSimulator
                 Console.Write("{0} ({1}) | ",actualVehicle.Name, actualVehicle.GetNameWithType());
             }
             Console.WriteLine("\n");
-            Console.WriteLine("Folytatáshoz nyomj meg egy billentyűt");
-            Console.ReadKey();
+           
         }
        
         private static void Run(int startingPoint)
@@ -100,7 +99,7 @@ namespace RaceSimulator
             {                
                OnFailureEnd();
             }
-            if (duration <= 15)
+            if (duration <= 50)
             {
                 if (dice.Next(1, 10) > 3)
                 {

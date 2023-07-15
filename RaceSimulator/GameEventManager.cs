@@ -47,17 +47,17 @@ namespace RaceSimulator
             Console.WriteLine("ESEMÉNYEK");
             for (int i = 0; i < Logger.eventContainer.Count; i++)
             {
-                if (Logger.eventContainer.ElementAt(i).Key.ToString().Contains(EventType.WEATHER.ToString()))
+                if (Logger.eventContainer.ElementAt(i).Key.Contains(EventType.WEATHER.ToString()))
                 {
                     Console.BackgroundColor = ConsoleColor.DarkBlue;
                     Console.ForegroundColor = ConsoleColor.White;
                 }
-                else if (Logger.eventContainer.ElementAt(i).Key.ToString().Contains(EventType.FAILURE.ToString()))
+                else if (Logger.eventContainer.ElementAt(i).Key.Contains(EventType.FAILURE.ToString()))
                 {
                     Console.BackgroundColor = ConsoleColor.Red;
                     Console.ForegroundColor = ConsoleColor.White;
                 }
-                else if (Logger.eventContainer.ElementAt(i).Key.ToString().Contains(EventType.CIRCUIT_CLEAR.ToString()))
+                else if (Logger.eventContainer.ElementAt(i).Key.Contains(EventType.CIRCUIT_CLEAR.ToString()))
                 {
                     Console.BackgroundColor = ConsoleColor.Green;
                     Console.ForegroundColor = ConsoleColor.White;
