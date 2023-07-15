@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Diagnostics;
 using static RaceSimulator.Truck;
 
 namespace RaceSimulator
@@ -15,14 +16,15 @@ namespace RaceSimulator
         private Truck[] trucks = new Truck[10];
         public static Dictionary<String, Vehicle> allCars = new Dictionary<String, Vehicle>();
 
-        private int duration = 1;
-        private Random dice = new Random();
-        private Timer timer;
-        private int? timeOfTrackFailure = null;
+        public static int duration = 1;
+        public static bool isPlaying = false;
+        private static Random dice = new Random();
+        private static Timer timer;
+        private static int? timeOfTrackFailure = null;
         public delegate void BreakDown();
         public static event BreakDown OnFailureEnd;
-        private bool isItRaining = false;
-        private int TIMELEAP = 2;
+        private static bool isItRaining = false;
+        private static int TIMELEAP = 2;
 
         public Game() {
             Truck.OnFailureStart += SaveTruckFailureTime;
@@ -34,7 +36,7 @@ namespace RaceSimulator
             CreateVehicles();
             FillFields();
             DisplayRacers();
-            Run();
+            Run(0);
         }
 
         private void CreateVehicles()
@@ -80,22 +82,23 @@ namespace RaceSimulator
                 Console.Write("{0} ({1}) | ",actualVehicle.Name, actualVehicle.GetNameWithType());
             }
             Console.WriteLine("\n");
+            Console.WriteLine("Folytatáshoz nyomj meg egy billentyűt");
+            Console.ReadKey();
         }
        
-        private void Run()
+        private static void Run(int startingPoint)
         {
             GameEventManager.TriggerGameStart();
-            //TODO: kéne egy ide egy pause meg start gomb
-            timer = new Timer(StepOneHour, null, 0, TIMELEAP*1000);
+            isPlaying = true;
+            timer = new Timer(StepOneHour, null, startingPoint, TIMELEAP*1000);
         }
               
-        private void StepOneHour(Object o)
+        private static void StepOneHour(Object o)
         {
             Console.Clear();
             if (duration == timeOfTrackFailure + 3 && OnFailureEnd != null) 
             {                
                OnFailureEnd();
-                Console.WriteLine("Nincs több lerobbant autó a pályán!");
             }
             if (duration <= 15)
             {
@@ -120,22 +123,37 @@ namespace RaceSimulator
             }
         }
 
-        private void Stop()
+        private static void Stop()
         {
             Console.WriteLine("Verseny véget ért. \n Az eredmény a következő");
             DisplayResult(allCars.Count, allCars);
             GameEventManager.TriggerGameEnd();
             timer.Dispose();
+            isPlaying = false;
+        }
+
+        public static void Pause()
+        {
+            isPlaying = false;
+            timer.Dispose();
+        }
+
+        public static void Continue(int time)
+        {
+            isPlaying = true;
+            timer = new Timer(StepOneHour, null, time, TIMELEAP * 1000);
         }
 
         private void SaveTruckFailureTime()
         {
-            this.timeOfTrackFailure = this.duration;
+            timeOfTrackFailure = duration;
         }
 
         private void ResetFailureTime()
         {
-            this.timeOfTrackFailure = null;
+            timeOfTrackFailure = null;
+            string actualEvent = "Nincs több lerobbant autó a pályán!";
+            Logger.eventContainer.Add(Logger.getId() + EventType.CIRCUIT_CLEAR.ToString(), Logger.getFullEventString(actualEvent, duration-1));
         }
 
         public static void DisplayResult(int numberOfCars, Dictionary<String, Vehicle> allCars)
@@ -144,7 +162,7 @@ namespace RaceSimulator
             for (int i = 0; i < numberOfCars; i++)
             {
                 Vehicle actualCar = allCars.ElementAt(i).Value;
-                Console.WriteLine("{0}. {1} ({2}) {3} km", i+1, actualCar.Name, actualCar.GetNameWithType(), actualCar.Distance);
+                Console.WriteLine("{0}. {1} ({2}) {3} km - {4} km/h", i+1, actualCar.Name, actualCar.GetNameWithType(), actualCar.Distance, actualCar.Speed);
             }
         }
     }

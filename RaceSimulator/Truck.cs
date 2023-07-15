@@ -8,15 +8,15 @@ namespace RaceSimulator
 {
     internal class Truck : Vehicle
     {
-        int[] names = new int[10];
+        static List<int> names = new List<int>();
         Random dice = new Random();
         public delegate void BreakDown();
         public static event BreakDown OnFailureStart;
         private bool brokedDown = false;
         private int failureHourCounter = 0;
         private int runningCounter = 0;
-        public Truck() {
 
+        public Truck() {
             this.Name = GetUniqueName();
             GameEventManager.OnGameStart += Start;
             GameEventManager.OnGameEnd += Stop;
@@ -28,10 +28,11 @@ namespace RaceSimulator
             int actualName = dice.Next(0, 1000);
             if (names.Contains(actualName))
             {
-               return GetUniqueName();
+                return GetUniqueName();
             }
             else
             {
+                names.Add(actualName);
                 return actualName.ToString();
             }
         }
@@ -46,11 +47,11 @@ namespace RaceSimulator
             runningCounter++;
             if(this.failureHourCounter == 2)
             {
-                Start();
-                this.failureHourCounter = 0;
-                this.Run();
                 string actualEvent = ($"Truck {this.Name} javítása befejeződött. Folytathatja a versenyt.");
-                Logger.eventContainer.Add(Logger.getId(), runningCounter + ":00: " + actualEvent);
+                Logger.eventContainer.Add(Logger.getId()+EventType.CIRCUIT_CLEAR.ToString(), runningCounter + ":00: " + actualEvent);
+                this.failureHourCounter = 0;
+                Start();
+                this.Run();
             }
             if (this.Speed == 0)
             {
@@ -65,7 +66,7 @@ namespace RaceSimulator
                 if (OnFailureStart != null)
                 {
                     string actualEvent = $"Truck {this.Name} lerobbant a pályán.";
-                    Logger.eventContainer.Add(Logger.getId(), runningCounter + ":00: " + actualEvent);
+                    Logger.eventContainer.Add(Logger.getId() + EventType.FAILURE.ToString(), runningCounter + ":00: " + actualEvent);
                     OnFailureStart();
                 }
             }

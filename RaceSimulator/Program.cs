@@ -23,6 +23,19 @@ namespace RaceSimulator
                 newGame.StartGame();
                 Console.ReadKey();
             }
+
+           while (!(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Escape && Game.isPlaying == true))
+            {
+                Game.Pause();
+                if ((Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Enter))
+                {
+                    Game.Continue(Game.duration);
+                    Console.ReadKey();
+                }
+            }
+
+           
+
         }
 
        

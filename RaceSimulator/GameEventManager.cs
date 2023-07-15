@@ -38,11 +38,33 @@ namespace RaceSimulator
                 Console.WriteLine("{0}:00 - Verseny állása:", hour);
                 Game.DisplayResult(10,Game.allCars);
 
-                Console.WriteLine("ESEMÉNYEK");
-                for (int i = 0; i < Logger.eventContainer.Count; i++)
+                ListEvents();
+            }
+        }
+
+        private static void ListEvents()
+        {
+            Console.WriteLine("ESEMÉNYEK");
+            for (int i = 0; i < Logger.eventContainer.Count; i++)
+            {
+                if (Logger.eventContainer.ElementAt(i).Key.ToString().Contains(EventType.WEATHER.ToString()))
                 {
-                    Console.WriteLine(Logger.eventContainer.ElementAt(i));
-                } 
+                    Console.BackgroundColor = ConsoleColor.DarkBlue;
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                else if (Logger.eventContainer.ElementAt(i).Key.ToString().Contains(EventType.FAILURE.ToString()))
+                {
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+                else if (Logger.eventContainer.ElementAt(i).Key.ToString().Contains(EventType.CIRCUIT_CLEAR.ToString()))
+                {
+                    Console.BackgroundColor = ConsoleColor.Green;
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+
+                Console.WriteLine((i+1)+". "+Logger.eventContainer.ElementAt(i).Value);
+                Console.ResetColor();
             }
         }
 
@@ -51,7 +73,7 @@ namespace RaceSimulator
             if(OnRainStart != null)
             {
                 string actualEvent = isItRaining? "Még mindig esik.":"Az eső rákezdett.";
-                Logger.eventContainer.Add(Logger.getId(), hour+":00: "+actualEvent);
+                Logger.eventContainer.Add(Logger.getId()+EventType.WEATHER.ToString(), hour+":00: "+actualEvent);
                 OnRainStart();
             }
         }
@@ -60,8 +82,8 @@ namespace RaceSimulator
         {
             if (OnRainEnd != null)
             {
-                string actualEvent = "Eső befejeződött";
-                Logger.eventContainer.Add(Logger.getId(), hour + ":00: " + actualEvent);
+                string actualEvent = "Eső befejeződött.";
+                Logger.eventContainer.Add(Logger.getId() + EventType.WEATHER.ToString(), Logger.getFullEventString(actualEvent, hour));
                 OnRainEnd();
             }
         }
