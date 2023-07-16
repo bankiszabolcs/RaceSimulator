@@ -44,26 +44,27 @@ namespace RaceSimulator
 
         private static void ListEvents()
         {
+            var logs = Logger.eventContainer;
             Console.WriteLine("ESEMÉNYEK");
-            for (int i = 0; i < Logger.eventContainer.Count; i++)
+            for (int i = logs.Count <= 10? 0 : logs.Count-10; i < logs.Count; i++)
             {
-                if (Logger.eventContainer.ElementAt(i).Key.Contains(EventType.WEATHER.ToString()))
+                if (logs.ElementAt(i).Key.Contains(EventType.WEATHER.ToString()))
                 {
                     Console.BackgroundColor = ConsoleColor.DarkBlue;
                     Console.ForegroundColor = ConsoleColor.White;
                 }
-                else if (Logger.eventContainer.ElementAt(i).Key.Contains(EventType.FAILURE.ToString()))
+                else if (logs.ElementAt(i).Key.Contains(EventType.FAILURE.ToString()))
                 {
                     Console.BackgroundColor = ConsoleColor.Red;
                     Console.ForegroundColor = ConsoleColor.White;
                 }
-                else if (Logger.eventContainer.ElementAt(i).Key.Contains(EventType.CIRCUIT_CLEAR.ToString()))
+                else if (logs.ElementAt(i).Key.Contains(EventType.CIRCUIT_CLEAR.ToString()))
                 {
                     Console.BackgroundColor = ConsoleColor.Green;
                     Console.ForegroundColor = ConsoleColor.White;
                 }
 
-                Console.WriteLine((i+1)+". "+Logger.eventContainer.ElementAt(i).Value);
+                Console.WriteLine((i+1)+". "+logs.ElementAt(i).Value);
                 Console.ResetColor();
             }
         }
