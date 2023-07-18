@@ -17,6 +17,8 @@ A random számításoknál beépített funkció használata ajánlott.
 •	5% esély, hogy 2 órára lerobban
 •	Név: Random szám 0-1000 között
 
+***
+
 #Race simulation
 3 types of vehicles take part in the competition: Car, Motorcycle, Truck. 10 of each type compete for 50 hours, the progress of each competitor is checked hourly. To make testing easier you can adjust how many sec does one hour equal.
 A subtle change affects the behavior of the vehicles participating in the competition. There is a 30% chance of rain every hour. At the end of the competition, the result is announced. The result includes the name of the vehicle, the distance traveled and the type.
