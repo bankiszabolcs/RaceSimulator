@@ -27,6 +27,7 @@ namespace RaceSimulator
             if(OnGameEnd != null)
             {
                 Console.WriteLine("Verseny véget ért.");
+                Console.WriteLine("  _____ ___ _   _ ___ ____  _   _ \r\n |  ___|_ _| \\ | |_ _/ ___|| | | |\r\n | |_   | ||  \\| || |\\___ \\| |_| |\r\n |  _|  | || |\\  || | ___) |  _  |\r\n |_|   |___|_| \\_|___|____/|_| |_|\r\n                                  ");
                 OnGameEnd();
             }
         }
@@ -35,7 +36,8 @@ namespace RaceSimulator
         {
             if(OnRun != null){ 
                 OnRun();
-                Console.WriteLine("{0}:00 - Verseny állása:", hour);
+                Console.WriteLine("  ____                \r\n |  _ \\ __ _  ___ ___ \r\n | |_) / _` |/ __/ _ \\\r\n |  _ < (_| | (_|  __/\r\n |_| \\_\\__,_|\\___\\___|");
+                Console.WriteLine("\n{0}:00 - Verseny állása:", hour);
                 Game.DisplayResult(10,Game.allCars);
 
                 ListEvents();
@@ -45,7 +47,8 @@ namespace RaceSimulator
         private static void ListEvents()
         {
             var logs = Logger.eventContainer;
-            Console.WriteLine("ESEMÉNYEK");
+            //Console.WriteLine("\033[30m \033[107m ESEMÉNYEK ");
+            Console.WriteLine("\n\x1b[30;47mESEMÉNYEK");
             for (int i = logs.Count <= 10? 0 : logs.Count-10; i < logs.Count; i++)
             {
                 if (logs.ElementAt(i).Key.Contains(EventType.WEATHER.ToString()))

@@ -39,7 +39,6 @@ namespace RaceSimulator
 
         public Car() {
             string actualCarName1 = carNames[dice.Next(0, carNames.Count-1)];
-            //As the Dictionary's keys has to be unique, we have to delete the item had already assigned.
             carNames.Remove(actualCarName1);
             string actualCarName2 = carNames2[dice.Next(0, carNames2.Count-1)];
             carNames2.Remove(actualCarName2);

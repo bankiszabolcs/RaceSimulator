@@ -51,7 +51,8 @@ namespace RaceSimulator
                 Logger.eventContainer.Add(Logger.getId()+EventType.CIRCUIT_CLEAR.ToString(), runningCounter + ":00: " + actualEvent);
                 this.failureHourCounter = 0;
                 Start();
-                this.Run();
+                base.Run();
+                return;
             }
             if (this.Speed == 0)
             {

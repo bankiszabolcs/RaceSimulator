@@ -124,7 +124,7 @@ namespace RaceSimulator
 
         private static void Stop()
         {
-            Console.WriteLine("Verseny véget ért. \n Az eredmény a következő");
+            Console.WriteLine(" ____  _____ ____  _   _ _   _____ \r\n |  _ \\| ____/ ___|| | | | | |_   _|\r\n | |_) |  _| \\___ \\| | | | |   | |  \r\n |  _ <| |___ ___) | |_| | |___| |  \r\n |_| \\_\\_____|____/ \\___/|_____|_|  \r\n                                    ");
             DisplayResult(allCars.Count, allCars);
             GameEventManager.TriggerGameEnd();
             timer.Dispose();
